@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  filename  String
+  fileType  String
+  rawText   String
+  summary   String?
+  entities  String?
+  createdAt DateTime @default(now())
+  chunks    Chunk[]
+  linksFrom Link[]   @relation("linksFrom")
+  linksTo   Link[]   @relation("linksTo")
+}
+
+model Chunk {
+  id         String   @id @default(cuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  content    String
+  embedding  String
+  chunkIndex Int
+}
+
+model Link {
+  id                 String   @id @default(cuid())
+  fromDocumentId     String
+  toDocumentId       String
+  fromDocument       Document @relation("linksFrom", fields: [fromDocumentId], references: [id], onDelete: Cascade)
+  toDocument         Document @relation("linksTo", fields: [toDocumentId], references: [id], onDelete: Cascade)
+  relationType       String   // cites | contradicts | extends | unrelated | related (fallback)
+  relationConfidence Float?
+  strength           Int
+  strengthConfidence Float?
+  source             String   @default("jev")
+  createdAt          DateTime @default(now())
+
+  @@unique([fromDocumentId, toDocumentId])
+}

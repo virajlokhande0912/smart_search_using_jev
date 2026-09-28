@@ -1,0 +1,4 @@
+import { NextResponse } from "next/server";
+import { db } from "../../../../lib/db";
+export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) { const { id } = await params; const doc = await db.document.findUnique({ where: { id }, include: { linksFrom: { include: { toDocument: { select: { id: true, filename: true } } } }, linksTo: { include: { fromDocument: { select: { id: true, filename: true } } } } } }); return doc ? NextResponse.json(doc) : NextResponse.json({ error: "not found" }, { status: 404 }); }
+export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) { const { id } = await params; try { await db.document.delete({ where: { id } }); return new NextResponse(null, { status: 204 }); } catch (error) { if (error instanceof Error && error.message.includes("Record to delete does not exist")) return NextResponse.json({ error: "not found" }, { status: 404 }); throw error; } }
