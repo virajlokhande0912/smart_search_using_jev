@@ -48,6 +48,16 @@ h3 { margin: 0; font-size: 16px; font-weight: 500; }
 .search-result:last-child { border-bottom: 0; }
 .search-result:hover { background: var(--base-10); }
 .search-result span { color: var(--base-60); }
+.answer-block { margin-top: var(--space-2); padding: 18px 20px; background: var(--base-00); border: 1px solid var(--base-25); border-radius: var(--radius-lg); }
+.answer-text { margin: 0; color: var(--base-100); font-size: 14px; line-height: 1.65; white-space: pre-wrap; }
+.answer-text.streaming::after { content: "▍"; color: var(--accent); animation: blink 1s step-start infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.answer-empty { margin: 0; color: var(--base-60); font-size: 13px; font-style: normal; }
+.sources-toggle { display: flex; align-items: center; gap: 6px; margin-top: 14px; padding: 12px 0 0; width: 100%; border: 0; border-top: 1px solid var(--base-20); background: transparent; color: var(--base-60); cursor: pointer; font-family: var(--font-mono); font-size: 12px; text-align: left; }
+.sources-toggle:hover { color: var(--base-100); }
+.sources-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.source-item { display: flex; align-items: center; gap: 6px; color: var(--base-70); font-size: 12px; }
+.source-item .filename { color: var(--base-100); font-weight: 500; }
 .card-list { display: grid; gap: var(--space-3); margin-top: var(--space-4); }
 .card { display: block; padding: var(--space-4) 18px; background: var(--base-00); border: 1px solid var(--base-25); border-radius: var(--radius-lg); }
 .card:hover { background: var(--base-10); border-color: var(--base-40); }
